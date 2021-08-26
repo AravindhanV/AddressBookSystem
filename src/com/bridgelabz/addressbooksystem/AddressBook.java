@@ -62,6 +62,12 @@ public class AddressBook {
 			System.err.println("Invalid Option");
 		}
 	}
+	
+	public void deleteContact() {
+		System.out.println("Enter first name of person you want edit:");
+		String firstName = scanner.nextLine();
+		contacts.remove(firstName.toLowerCase());
+	}
 
 	public void addContact() {
 		System.out.println("Enter the contact details:");
