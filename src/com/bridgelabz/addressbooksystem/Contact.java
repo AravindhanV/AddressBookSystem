@@ -1,6 +1,6 @@
 package com.bridgelabz.addressbooksystem;
 
-public class Contacts {
+public class Contact {
 	private final String firstName;
 	private final String lastName;
 	private final String city;
@@ -9,7 +9,7 @@ public class Contacts {
 	private final String phoneNumber;
 	private final String email;
 
-	public Contacts(String firstName, String lastName, String city, String state, String zip, String phoneNumber,
+	public Contact(String firstName, String lastName, String city, String state, String zip, String phoneNumber,
 			String email) {
 		this.firstName = firstName;
 		this.lastName = lastName;
