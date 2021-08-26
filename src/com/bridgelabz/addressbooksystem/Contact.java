@@ -13,7 +13,7 @@ public class Contact {
 			String email) {
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.setCity(city);
+		this.city = city;
 		this.state = state;
 		this.zip = zip;
 		this.phoneNumber = phoneNumber;
