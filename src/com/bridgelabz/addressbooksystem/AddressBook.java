@@ -6,10 +6,12 @@ public class AddressBook {
 	private Contact[] contacts;
 	private static Scanner scanner = new Scanner(System.in);
 	private int noOfContacts;
+	private int addressBookId;
 
-	public AddressBook() {
+	public AddressBook(int id) {
 		this.contacts = new Contact[10];
 		this.noOfContacts = 0;
+		this.addressBookId = id;
 	}
 
 	public void editContact() {
