@@ -30,7 +30,7 @@ public class AddressBookMain {
 
 	public static int readActionChoice() {
 		System.out.println(
-				"Enter 1. Add,2. Edit, 3. Delete, 4. Search by City across books, 5. Search by state across books, 6. Exit");
+				"Enter 1. Add,2. Edit, 3. Delete, 4. Search by City across books, 5. Search by state across books, 6. Contact summary, 7. Exit");
 		int actionChoice = Integer.parseInt(scanner.nextLine());
 		return actionChoice;
 	}
@@ -44,6 +44,13 @@ public class AddressBookMain {
 	public void searchAcrossByState(String state) {
 		for(AddressBook addressBook : addressBooks.values()) {
 			addressBook.findContactInState(state);
+		}
+	}
+	
+	public void printTotalSummary() {
+		for(AddressBook addressBook : addressBooks.values()) {
+			addressBook.printSummary();
+			System.out.println("--------------------------------");
 		}
 	}
 
@@ -80,8 +87,12 @@ public class AddressBookMain {
 				String state = readState();
 				addressBookMain.searchAcrossByState(state);
 				break;
-
+				
 			case 6:
+				addressBookMain.printTotalSummary();
+				break;
+
+			case 7:
 				System.exit(0);
 				break;
 			}

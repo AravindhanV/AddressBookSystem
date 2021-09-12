@@ -23,6 +23,25 @@ public class AddressBook {
 
 	}
 	
+	public void printSummary() {
+		System.out.println("Summary by City:");
+		printCitySummary();
+		System.out.println("\nSummary by state:");
+		printStateSummary();
+	}
+	
+	public void printCitySummary() {
+		for (String city: contactsByCity.keySet()) {
+			System.out.println(city+" : "+contactsByCity.get(city).size());
+		}
+	}
+	
+	public void printStateSummary() {
+		for (String state: contactsByState.keySet()) {
+			System.out.println(state+" : "+contactsByState.get(state).size());
+		}
+	}
+	
 	public void findContactInState(String stateName) {
 		for(Contact contact: contacts.values()) {
 			if(contact.getState().equals(stateName)) {
