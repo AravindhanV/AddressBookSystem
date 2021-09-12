@@ -12,6 +12,24 @@ public class AddressBook {
 		this.contacts = new HashMap<String, Contact>();
 		this.noOfContacts = 0;
 	}
+	
+	public void findContactInCity(String cityName) {
+		for(Contact contact: contacts.values()) {
+			if(contact.getCity().equals(cityName)) {
+				System.out.println(contact.getFirstName()+":"+cityName);
+			}
+		}
+
+	}
+	
+	public void findContactInState(String stateName) {
+		for(Contact contact: contacts.values()) {
+			if(contact.getState().equals(stateName)) {
+				System.out.println(contact.getFirstName()+":"+stateName);
+			}
+		}
+
+	}
 
 	public void editContact() {
 		System.out.println("Enter first name of person you want edit:");
