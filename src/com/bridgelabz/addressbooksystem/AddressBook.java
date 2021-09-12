@@ -4,13 +4,14 @@ import java.util.*;
 
 public class AddressBook {
 	private HashMap<String, Contact> contacts;
+	private HashMap<String, ArrayList<Contact>> contactsByCity;
+	private HashMap<String, ArrayList<Contact>> contactsByState;
 	private static Scanner scanner = new Scanner(System.in);
-	private int noOfContacts;
-	private int addressBookId;
 
 	public AddressBook() {
 		this.contacts = new HashMap<String, Contact>();
-		this.noOfContacts = 0;
+		this.contactsByCity = new HashMap<>();
+		this.contactsByState = new HashMap<>();
 	}
 	
 	public void findContactInCity(String cityName) {
@@ -117,6 +118,17 @@ public class AddressBook {
 			contacts.put(firstName, contact);
 		} else {
 			System.out.println("Duplicate Name");
+			return;
 		}
+		
+		if(contactsByCity.get(city) == null) {
+			contactsByCity.put(city,new ArrayList<>());
+		}
+		contactsByCity.get(city).add(contact);
+		
+		if(contactsByCity.get(state) == null) {
+			contactsByCity.put(state,new ArrayList<>());
+		}
+		contactsByCity.get(state).add(contact);
 	}
 }
