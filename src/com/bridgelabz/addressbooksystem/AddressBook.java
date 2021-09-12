@@ -3,26 +3,23 @@ package com.bridgelabz.addressbooksystem;
 import java.util.*;
 
 public class AddressBook {
-	private Contact[] contacts;
+	private HashMap<String, Contact> contacts;
 	private static Scanner scanner = new Scanner(System.in);
 	private int noOfContacts;
 	private int addressBookId;
 
 	public AddressBook(int id) {
-		this.contacts = new Contact[10];
+		this.contacts = new HashMap<String, Contact>();
 		this.noOfContacts = 0;
-		this.addressBookId = id;
 	}
 
 	public void editContact() {
-		System.out.println("Enter phone of person you want edit:");
-		String phone = scanner.nextLine();
-		Contact contactToEdit = null;
-		for(Contact contact : contacts) {
-			if(contact.getPhoneNumber().equals(phone)) {
-				contactToEdit = contact;
-				break;
-			}
+		System.out.println("Enter first name of person you want edit:");
+		String firstName = scanner.nextLine();
+		Contact contactToEdit = contacts.get(firstName);
+		if(contactToEdit == null) {
+			System.out.println("Contact doesn't exist");
+			return;
 		}
 		System.out
 				.println("Select Option:\n1. First Name\n2. Last Name\n 3. City\n4. State\n5. Zip\n6. Phone\n7. Email");
@@ -31,8 +28,10 @@ public class AddressBook {
 		switch (choice) {
 		case 1:
 			System.out.println("Enter new first name:");
-			String newName = scanner.nextLine();
-			contactToEdit.setFirstName(newName);
+			String newFirstName = scanner.nextLine();
+			contactToEdit.setFirstName(newFirstName);
+			contacts.remove(firstName);
+			contacts.put(newFirstName, contactToEdit);
 			break;
 
 		case 2:
@@ -69,19 +68,19 @@ public class AddressBook {
 			System.err.println("Invalid Option");
 		}
 	}
-	
+
 	public void deleteContact() {
 		System.out.println("Enter phone number of person you want to delete:");
 		String phone = scanner.nextLine();
-		int index=0;
-		for(;index<noOfContacts;index++) {
-			if(contacts[index].getPhoneNumber().equals(phone)) {
+		int index = 0;
+		for (; index < noOfContacts; index++) {
+			if (contacts[index].getPhoneNumber().equals(phone)) {
 				break;
 			}
 		}
-		
-		for(;index<noOfContacts-1;index++) {
-			contacts[index] = contacts[index+1];
+
+		for (; index < noOfContacts - 1; index++) {
+			contacts[index] = contacts[index + 1];
 		}
 		System.out.println("Successfully Deleted");
 	}
@@ -102,7 +101,12 @@ public class AddressBook {
 		String phoneNumber = scanner.nextLine();
 		System.out.println("Enter email");
 		String email = scanner.nextLine();
-		
-		contacts[noOfContacts++] = new Contact(firstName, lastName, city, state, zip, phoneNumber, email);
+
+		Contact contact = new Contact(firstName, lastName, city, state, zip, phoneNumber, email);
+		if (contacts.get(firstName) == null) {
+			contacts.put(firstName, contact);
+		} else {
+			System.out.println("Duplicate Name");
+		}
 	}
 }
