@@ -70,19 +70,11 @@ public class AddressBook {
 	}
 
 	public void deleteContact() {
-		System.out.println("Enter phone number of person you want to delete:");
-		String phone = scanner.nextLine();
-		int index = 0;
-		for (; index < noOfContacts; index++) {
-			if (contacts[index].getPhoneNumber().equals(phone)) {
-				break;
-			}
+		System.out.println("Enter first name number of person you want to delete:");
+		String firstName = scanner.nextLine();
+		if(contacts.remove(firstName) != null) {
+			System.out.println("Successfully Deleted");
 		}
-
-		for (; index < noOfContacts - 1; index++) {
-			contacts[index] = contacts[index + 1];
-		}
-		System.out.println("Successfully Deleted");
 	}
 
 	public void addContact() {
