@@ -3,18 +3,16 @@ package com.bridgelabz.addressbooksystem;
 import java.util.*;
 
 public class AddressBookMain {
-	private AddressBook[] addressBooks;
-	private int noOfAddressBooks;
+	private HashMap<String, AddressBook> addressBooks;
 	private static Scanner scanner = new Scanner(System.in);
 
 	public AddressBookMain() {
-		this.addressBooks = new AddressBook[5];
-		this.noOfAddressBooks = 0;
+		this.addressBooks = new HashMap<>();
 	}
 	
-	public static int readBookChoice() {
-		System.out.println("Enter ID of address book (-1 to exit):");
-		int bookChoice = Integer.parseInt(scanner.nextLine());
+	public static String readBookChoice() {
+		System.out.println("Enter name of address book (-1 to exit):");
+		String bookChoice = scanner.nextLine();
 		return bookChoice;
 	}
 	
@@ -27,25 +25,25 @@ public class AddressBookMain {
 	public static void main(String[] args) {
 		System.out.println("Welcome to Address Book Program");
 		AddressBookMain addressBookMain = new AddressBookMain();
-		addressBookMain.addAddressBook();
-		addressBookMain.addAddressBook();
+		addressBookMain.addAddressBook("book1");
+		addressBookMain.addAddressBook("book2");
 		
-		int bookChoice = readBookChoice();
-		if (bookChoice == -1) {
+		String bookChoice = readBookChoice();
+		if (bookChoice == "") {
 			return;
 		}
 		while (true) {
 			switch (readActionChoice()) {
 			case 1:
-				addressBookMain.addressBooks[bookChoice].addContact();
+				addressBookMain.addressBooks.get(bookChoice).addContact();
 				break;
 
 			case 2:
-				addressBookMain.addressBooks[bookChoice].editContact();
+				addressBookMain.addressBooks.get(bookChoice).editContact();
 				break;
 
 			case 3:
-				addressBookMain.addressBooks[bookChoice].deleteContact();
+				addressBookMain.addressBooks.get(bookChoice).deleteContact();
 				break;
 
 			case 4:
@@ -55,7 +53,7 @@ public class AddressBookMain {
 		}
 	}
 
-	public void addAddressBook() {
-		addressBooks[noOfAddressBooks++] = new AddressBook(noOfAddressBooks);
+	public void addAddressBook(String bookName) {
+		AddressBook addressBook = new AddressBook();
 	}
 }

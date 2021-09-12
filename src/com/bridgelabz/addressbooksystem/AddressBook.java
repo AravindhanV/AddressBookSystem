@@ -8,7 +8,7 @@ public class AddressBook {
 	private int noOfContacts;
 	private int addressBookId;
 
-	public AddressBook(int id) {
+	public AddressBook() {
 		this.contacts = new HashMap<String, Contact>();
 		this.noOfContacts = 0;
 	}
