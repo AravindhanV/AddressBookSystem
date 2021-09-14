@@ -91,8 +91,10 @@ public class AddressBookMain {
 			case 6:
 				addressBookMain.printTotalSummary();
 				break;
+				
+			case 7: addressBookMain.addressBooks.get(bookChoice).getSortedContacts();
 
-			case 7:
+			case 8:
 				System.exit(0);
 				break;
 			}

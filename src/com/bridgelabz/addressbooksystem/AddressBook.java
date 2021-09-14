@@ -27,6 +27,12 @@ public class AddressBook {
 		printStateSummary();
 	}
 	
+	public void getSortedContacts()
+	{
+		contacts.stream().sorted((c1,c2) -> c1.compareTo(c2)).peek(c -> {
+			System.out.println(c.getFirstName());
+		});
+	}
 	public void printCitySummary() {
 		contactsByCity.keySet().stream().peek(c -> {
 			System.out.println(c+" : "+contactsByCity.get(c).stream().count());
