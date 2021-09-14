@@ -3,13 +3,15 @@ package com.bridgelabz.addressbooksystem;
 import java.util.*;
 
 public class AddressBook {
-	private HashMap<String, ArrayList<Contact>> contactsByCity;
-	private HashMap<String, ArrayList<Contact>> contactsByState;
+	private HashMap<String, LinkedList<Contact>> contactsByCity;
+	private HashMap<String, LinkedList<Contact>> contactsByState;
 	private List<Contact> contacts;
 	private static Scanner scanner = new Scanner(System.in);
 
-	public AddressBook(int id) {
+	public AddressBook() {
 		this.contacts = new LinkedList<Contact>();
+		this.contactsByCity = new HashMap<>();
+		this.contactsByState = new HashMap<>();
 	}
 	
 	public void findContactInCity(String cityName) {
@@ -130,7 +132,17 @@ public class AddressBook {
 		if(!checkIfContactExists(contact)) {
 			contacts.add(contact);
 		}
-		contactsByCity.get(state).add(contact);
+		if(contactsByCity.get(city)==null) {
+			contactsByCity.put(city, new LinkedList<>());
+		}
+		contactsByCity.get(city).add(contact);
+		
+		if(contactsByState.get(state)==null) {
+			contactsByState.put(state, new LinkedList<>());
+		}
+		contactsByState.get(state).add(contact);
+		
+		
 	}
 	
 	private boolean checkIfContactExists(Contact contact) {
