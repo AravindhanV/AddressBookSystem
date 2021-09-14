@@ -13,12 +13,9 @@ public class AddressBook {
 	}
 	
 	public void findContactInCity(String cityName) {
-		for(Contact contact: contacts) {
-			if(contact.getCity().equals(cityName)) {
-				System.out.println(contact.getFirstName()+":"+cityName);
-			}
-		}
-
+		contacts.stream().filter(c -> c.getCity().equals(cityName)).peek(c -> {
+			System.out.println(c.getFirstName()+" : "+cityName);
+		});
 	}
 	
 	public void printSummary() {
