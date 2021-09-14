@@ -3,19 +3,17 @@ package com.bridgelabz.addressbooksystem;
 import java.util.*;
 
 public class AddressBook {
-	private HashMap<String, Contact> contacts;
 	private HashMap<String, ArrayList<Contact>> contactsByCity;
 	private HashMap<String, ArrayList<Contact>> contactsByState;
+	private List<Contact> contacts;
 	private static Scanner scanner = new Scanner(System.in);
 
-	public AddressBook() {
-		this.contacts = new HashMap<String, Contact>();
-		this.contactsByCity = new HashMap<>();
-		this.contactsByState = new HashMap<>();
+	public AddressBook(int id) {
+		this.contacts = new LinkedList<Contact>();
 	}
 	
 	public void findContactInCity(String cityName) {
-		for(Contact contact: contacts.values()) {
+		for(Contact contact: contacts) {
 			if(contact.getCity().equals(cityName)) {
 				System.out.println(contact.getFirstName()+":"+cityName);
 			}
@@ -43,18 +41,17 @@ public class AddressBook {
 	}
 	
 	public void findContactInState(String stateName) {
-		for(Contact contact: contacts.values()) {
+		for(Contact contact: contacts) {
 			if(contact.getState().equals(stateName)) {
 				System.out.println(contact.getFirstName()+":"+stateName);
 			}
 		}
-
 	}
 
 	public void editContact() {
 		System.out.println("Enter first name of person you want edit:");
 		String firstName = scanner.nextLine();
-		Contact contactToEdit = contacts.get(firstName);
+		Contact contactToEdit = contacts.stream().filter(c -> c.getFirstName().equals(firstName)).findFirst().orElse(null);
 		if(contactToEdit == null) {
 			System.out.println("Contact doesn't exist");
 			return;
@@ -68,8 +65,6 @@ public class AddressBook {
 			System.out.println("Enter new first name:");
 			String newFirstName = scanner.nextLine();
 			contactToEdit.setFirstName(newFirstName);
-			contacts.remove(firstName);
-			contacts.put(newFirstName, contactToEdit);
 			break;
 
 		case 2:
@@ -110,8 +105,12 @@ public class AddressBook {
 	public void deleteContact() {
 		System.out.println("Enter first name number of person you want to delete:");
 		String firstName = scanner.nextLine();
-		if(contacts.remove(firstName) != null) {
-			System.out.println("Successfully Deleted");
+		for(int i=0;i<contacts.size();i++) {
+			if(contacts.get(i).getFirstName().equals(firstName)) {
+				contacts.remove(i);
+				System.out.println("Successfully Deleted");
+				return;
+			}
 		}
 	}
 
@@ -133,21 +132,13 @@ public class AddressBook {
 		String email = scanner.nextLine();
 
 		Contact contact = new Contact(firstName, lastName, city, state, zip, phoneNumber, email);
-		if (contacts.get(firstName) == null) {
-			contacts.put(firstName, contact);
-		} else {
-			System.out.println("Duplicate Name");
-			return;
-		}
-		
-		if(contactsByCity.get(city) == null) {
-			contactsByCity.put(city,new ArrayList<>());
-		}
-		contactsByCity.get(city).add(contact);
-		
-		if(contactsByCity.get(state) == null) {
-			contactsByCity.put(state,new ArrayList<>());
+		if(!checkIfContactExists(contact)) {
+			contacts.add(contact);
 		}
 		contactsByCity.get(state).add(contact);
+	}
+	
+	private boolean checkIfContactExists(Contact contact) {
+		return contacts.stream().filter(c -> c.equals(contact)).findFirst().orElse(null) != null;
 	}
 }
