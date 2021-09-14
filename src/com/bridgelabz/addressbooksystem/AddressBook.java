@@ -38,11 +38,9 @@ public class AddressBook {
 	}
 	
 	public void findContactInState(String stateName) {
-		for(Contact contact: contacts) {
-			if(contact.getState().equals(stateName)) {
-				System.out.println(contact.getFirstName()+":"+stateName);
-			}
-		}
+		contacts.stream().filter(c -> c.getState().equals(stateName)).peek(c -> {
+			System.out.println(c.getFirstName()+" : "+stateName);
+		});
 	}
 
 	public void editContact() {
