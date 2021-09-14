@@ -19,6 +19,10 @@ public class Contact {
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 	}
+	
+	public boolean equals(Contact c) {
+		return this.firstName.equals(c.getFirstName());
+	}
 
 	public String getCity() {
 		return city;
