@@ -28,15 +28,15 @@ public class AddressBook {
 	}
 	
 	public void printCitySummary() {
-		for (String city: contactsByCity.keySet()) {
-			System.out.println(city+" : "+contactsByCity.get(city).size());
-		}
+		contactsByCity.keySet().stream().peek(c -> {
+			System.out.println(c+" : "+contactsByCity.get(c).stream().count());
+		});
 	}
 	
 	public void printStateSummary() {
-		for (String state: contactsByState.keySet()) {
-			System.out.println(state+" : "+contactsByState.get(state).size());
-		}
+		contactsByState.keySet().stream().peek(s -> {
+			System.out.println(s+" : "+contactsByState.get(s).stream().count());
+		});
 	}
 	
 	public void findContactInState(String stateName) {
