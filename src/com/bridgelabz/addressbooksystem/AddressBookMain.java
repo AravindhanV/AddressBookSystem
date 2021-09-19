@@ -30,7 +30,7 @@ public class AddressBookMain {
 
 	public static int readActionChoice() {
 		System.out.println(
-				"Enter 1. Add,2. Edit, 3. Delete, 4. Search by City across books, 5. Search by state across books, 6. Contact summary, 7. Exit");
+				"Enter 1. Add,2. Edit, 3. Delete, 4. Search by City across books, 5. Search by state across books, 6. Contact summary,7. Sorted Contacts,8. Write book to file 9. Exit");
 		int actionChoice = Integer.parseInt(scanner.nextLine());
 		return actionChoice;
 	}
@@ -93,12 +93,20 @@ public class AddressBookMain {
 				break;
 				
 			case 7: addressBookMain.addressBooks.get(bookChoice).getSortedContacts();
+			break;
+			
+			case 8: addressBookMain.writeAddressBookToFile(bookChoice);
+			break;
 
-			case 8:
+			case 9:
 				System.exit(0);
 				break;
 			}
 		}
+	}
+	
+	public void writeAddressBookToFile(String bookName) {
+		addressBooks.get(bookName).writeToFile(bookName+".txt");
 	}
 
 	public void addAddressBook(String bookName) {

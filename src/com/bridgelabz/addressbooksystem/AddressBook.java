@@ -1,5 +1,8 @@
 package com.bridgelabz.addressbooksystem;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class AddressBook {
@@ -18,6 +21,20 @@ public class AddressBook {
 		contacts.stream().filter(c -> c.getCity().equals(cityName)).peek(c -> {
 			System.out.println(c.getFirstName()+" : "+cityName);
 		});
+	}
+	
+	public void writeToFile(String fileName) {
+		StringBuffer contactBuffer = new StringBuffer();
+		contacts.forEach(contact -> {
+			String contactString = contact.toString().concat("\n");
+			contactBuffer.append(contactString);
+		});
+		
+		try {
+			Files.write(Paths.get(fileName),contactBuffer.toString().getBytes());
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void printSummary() {
