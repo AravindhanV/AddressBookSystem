@@ -20,6 +20,10 @@ public class Contact implements Comparable<Contact>{
 		this.email = email;
 	}
 	
+	public String toString() {
+		return firstName+", "+lastName+", "+city+", "+state+", "+zip+", "+phoneNumber+", "+email;
+	}
+	
 	public boolean equals(Contact c) {
 		return this.firstName.equals(c.getFirstName());
 	}
