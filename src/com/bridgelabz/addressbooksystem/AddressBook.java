@@ -1,9 +1,20 @@
 package com.bridgelabz.addressbooksystem;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 
 public class AddressBook {
 	private HashMap<String, LinkedList<Contact>> contactsByCity;
@@ -170,5 +181,58 @@ public class AddressBook {
 	
 	private boolean checkIfContactExists(Contact contact) {
 		return contacts.stream().filter(c -> c.equals(contact)).findFirst().orElse(null) != null;
+	}
+
+	public void readFromCsv(String fileName) throws IOException{
+		try (Reader reader = Files.newBufferedReader(Paths.get(fileName));) {
+			CSVParser parser = new CSVParserBuilder().withSeparator('\t').build();
+			CSVReader csvReader = new CSVReaderBuilder(reader)
+					.withCSVParser(parser)
+                    .withSkipLines(1)
+                    .build();
+			List<String[]> allData = csvReader.readAll();
+			contacts = new LinkedList<>();
+			System.out.println(allData.size());
+
+			for(int index=0;index<allData.size()-1;index++) {
+				String[] row = allData.get(index);
+
+				System.out.println("First Name: " + row[0]);
+				System.out.println("Last Name: " + row[1]);
+				System.out.println("City: " + row[2]);
+				System.out.println("State: " + row[3]);
+				System.out.println("zip: "+row[4]);
+				System.out.println("Phone: "+row[5]);
+				System.out.println("Email: "+row[6]);
+				System.out.println("===============");
+				contacts.add(new Contact(row[0],row[1],row[2],row[3],row[4],row[5],row[6]));
+			}
+			
+			reader.close();
+		}
+	}
+
+	public void writeToCsv(String fileName) {
+		File file = new File("write.csv");
+		System.out.println("---");
+		
+		try {
+	        FileWriter outputfile = new FileWriter(file);
+	        CSVWriter writer = new CSVWriter(outputfile);
+	        
+	        List<String[]> data = new ArrayList();
+	        for(Contact c : contacts) {
+	        	String[] row = {c.getFirstName(),c.getLastName(),c.getCity(),c.getState(),c.getZip(),c.getPhoneNumber(),c.getEmail()};
+	        	data.add(row);
+	        }
+	        
+	        writer.writeAll(data);
+	        writer.close();
+	    }
+	    catch (IOException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+	    }
+		
 	}
 }

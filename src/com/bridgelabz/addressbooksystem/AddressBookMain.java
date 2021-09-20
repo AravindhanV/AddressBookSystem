@@ -1,5 +1,6 @@
 package com.bridgelabz.addressbooksystem;
 
+import java.io.IOException;
 import java.util.*;
 
 public class AddressBookMain {
@@ -30,7 +31,7 @@ public class AddressBookMain {
 
 	public static int readActionChoice() {
 		System.out.println(
-				"Enter 1. Add,2. Edit, 3. Delete, 4. Search by City across books, 5. Search by state across books, 6. Contact summary,7. Sorted Contacts,8. Write book to file 9. Exit");
+				"Enter 1. Add,2. Edit, 3. Delete, 4. Search by City across books, 5. Search by state across books, 6. Contact summary,7. Sorted Contacts,8. Write book to file,9. Read/Write contacts with CSV 10. Exit");
 		int actionChoice = Integer.parseInt(scanner.nextLine());
 		return actionChoice;
 	}
@@ -97,11 +98,22 @@ public class AddressBookMain {
 			
 			case 8: addressBookMain.writeAddressBookToFile(bookChoice);
 			break;
+			
+			case 9: addressBookMain.readAndWriteCSV(bookChoice);
+			break;
 
-			case 9:
+			case 10:
 				System.exit(0);
 				break;
 			}
+		}
+	}
+	
+	public void readAndWriteCSV(String bookName) {
+		try {
+			addressBooks.get(bookName).readFromCsv("read.csv");
+			addressBooks.get(bookName).writeToCsv("write.csv");
+		} catch (Exception e) {
 		}
 	}
 	
@@ -111,5 +123,6 @@ public class AddressBookMain {
 
 	public void addAddressBook(String bookName) {
 		AddressBook addressBook = new AddressBook();
+		addressBooks.put(bookName, addressBook);
 	}
 }
