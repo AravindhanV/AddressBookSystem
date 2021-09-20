@@ -24,6 +24,7 @@ dependencies {
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:28.0-jre'
     compile 'com.opencsv:opencsv:4.0'
+    compile 'com.google.code.gson:gson;2.2.+'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
