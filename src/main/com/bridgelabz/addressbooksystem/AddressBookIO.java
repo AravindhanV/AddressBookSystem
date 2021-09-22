@@ -63,7 +63,7 @@ public class AddressBookIO {
 		try {
 			Files.lines(new File(name).toPath())
 			.map(contact-> contact.trim())
-			.forEach(contact -> {System.out.println(contact);
+			.forEach(contact -> {
 								listOfContacts.add(contact);});
 		}catch(IOException e) {
 			e.printStackTrace();
@@ -71,27 +71,20 @@ public class AddressBookIO {
 		return listOfContacts;
 	}
 	
-	public String[] readFromCsv(String name) {
+	public int readFromCsv(String name) {
 		String[] nextRecord= {};
+		int noOfRecords=0;
 		try {
-            Reader reader = Files.newBufferedReader(Paths.get(name+".csv"));
+            Reader reader = Files.newBufferedReader(Paths.get(name));
             CSVReader csvReader = new CSVReader(reader);
-            System.out.println("Contact Details Are");
             while (((nextRecord = csvReader.readNext())) != null) {
-                System.out.println("firstName : " + nextRecord[0]);
-                System.out.println("lastName : " + nextRecord[1]);
-                System.out.println("address : " + nextRecord[2]);
-                System.out.println("city : " + nextRecord[3]);
-                System.out.println("state : " + nextRecord[4]);
-                System.out.println("zip : " + nextRecord[5]);
-                System.out.println("phoneNumber : " + nextRecord[6]);
-                System.out.println("email : " + nextRecord[7]);
+            	noOfRecords++;
             }
             
         } catch (IOException e) {
             e.printStackTrace();
         }
-		return nextRecord;
+		return noOfRecords-1;
 	}
 	
 	public List<Contact> readFromJson(String name) throws FileNotFoundException {
