@@ -92,7 +92,6 @@ public class AddressBookIO {
 		BufferedReader br=new BufferedReader(new FileReader(name));
 		Contact[] contactsFile= gson.fromJson(br, Contact[].class);
 		List<Contact> addressbook=Arrays.asList(contactsFile);
-		System.out.println(addressbook);
 		return addressbook;
 	}
 
