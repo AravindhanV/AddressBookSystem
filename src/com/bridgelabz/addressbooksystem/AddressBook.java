@@ -1,6 +1,7 @@
 package com.bridgelabz.addressbooksystem;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
@@ -15,6 +16,8 @@ import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 public class AddressBook implements AddressBookIF{
 	Scanner sc=new Scanner(System.in);
@@ -61,20 +64,18 @@ public class AddressBook implements AddressBookIF{
 		String firstName = sc.next();
 		System.out.println("Enter last name");
 		String lastName = sc.next();
-		System.out.println("Enter address");
-		String address=sc.next();
 		System.out.println("Enter city");
 		String city = sc.next();
 		System.out.println("Enter state");
 		String state = sc.next();
 		System.out.println("Enter Zip");
-		int zip = sc.nextInt();
+		String zip = sc.next();
 		System.out.println("Enter Phone");
-		int phoneNumber = sc.nextInt();
+		String phoneNumber = sc.next();
 		System.out.println("Enter email");
 		String email = sc.next();
 		
-		Contact newContact=new Contact(firstName,lastName,address,city,state,zip,phoneNumber,email);
+		Contact newContact=new Contact(firstName,lastName,city,state,zip,phoneNumber,email);
 		return newContact;
 		
 	}
@@ -146,16 +147,16 @@ public class AddressBook implements AddressBookIF{
 						contactToBeEdited.setState(newState);
 						break;
 				case 5: System.out.println("Enter new Zip Code");
-						int newZip=sc.nextInt();
-						contactToBeEdited.setZipCode(newZip);
+						String newZip=sc.next();
+						contactToBeEdited.setZip(newZip);
 						break;
 				case 6: System.out.println("Enter new Phone Number");
-						int newPNumber=sc.nextInt();
+						String newPNumber=sc.next();
 						contactToBeEdited.setPhoneNumber(newPNumber);
 						break;
 				case 7: System.out.println("Enter new Email");
 						String newEmail=sc.next();
-						contactToBeEdited.setEmailId(newEmail);
+						contactToBeEdited.setEmail(newEmail);
 						break;
 			}
 			System.out.println("Contact edited");
@@ -228,8 +229,8 @@ public class AddressBook implements AddressBookIF{
 	@Override
 	public void sortByZip() {
 		addressBook.stream()
-		.sorted((contact1, contact2) -> String.valueOf(contact1.getZipCode()).compareTo(String.valueOf(contact2.getZipCode())))
-		.forEach(contact -> System.out.print(contact.getFirstName()+":"+contact.getZipCode()+" "));
+		.sorted((contact1, contact2) -> contact1.getZip().compareTo(contact2.getZip()))
+		.forEach(contact -> System.out.print(contact.getFirstName()+":"+contact.getZip()+" "));
 	}
 	
 	@Override
