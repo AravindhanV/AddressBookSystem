@@ -211,10 +211,17 @@ public class AddressBook {
 			reader.close();
 		}
 	}
+	
+	public void readFromJson(String fileName) {
+		Gson gson=new Gson();
+		BufferedReader br=new BufferedReader(new FileReader(fileName));
+		Contact[] contactsFile= gson.fromJson(br, Contact[].class);
+		List<Contact> addressbook=Arrays.asList(contactsFile);
+		System.out.println(addressbook);
+	}
 
 	public void writeToCsv(String fileName) {
 		File file = new File("write.csv");
-		System.out.println("---");
 		
 		try {
 	        FileWriter outputfile = new FileWriter(file);
