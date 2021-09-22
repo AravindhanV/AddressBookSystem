@@ -16,230 +16,226 @@ import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
-public class AddressBook {
-	private HashMap<String, LinkedList<Contact>> contactsByCity;
-	private HashMap<String, LinkedList<Contact>> contactsByState;
-	private List<Contact> contacts;
-	private static Scanner scanner = new Scanner(System.in);
-
-	public AddressBook() {
-		this.contacts = new LinkedList<Contact>();
-		this.contactsByCity = new HashMap<>();
-		this.contactsByState = new HashMap<>();
+public class AddressBook implements AddressBookIF{
+	Scanner sc=new Scanner(System.in);
+	public LinkedList<Contact> addressBook;
+	public static HashMap<String, ArrayList<String>> contactsInCities=new HashMap<>();
+	public static HashMap<String, ArrayList<String>> contactsInStates=new HashMap<>();
+	String name;
+	public enum IOService{
+		FILE_IO,
+		CONSOLE_IO,
+		CSV_IO,
+		JSON_IO
+	}
+	public AddressBook(String name){
+		this.addressBook=new LinkedList<>();
+		this.name=name;
 	}
 	
-	public void findContactInCity(String cityName) {
-		contacts.stream().filter(c -> c.getCity().equals(cityName)).peek(c -> {
-			System.out.println(c.getFirstName()+" : "+cityName);
-		});
-	}
-	
-	public void writeToFile(String fileName) {
-		StringBuffer contactBuffer = new StringBuffer();
-		contacts.forEach(contact -> {
-			String contactString = contact.toString().concat("\n");
-			contactBuffer.append(contactString);
-		});
-		
-		try {
-			Files.write(Paths.get(fileName),contactBuffer.toString().getBytes());
-		} catch(IOException e) {
-			e.printStackTrace();
+	public void writeData(String name, IOService ioService) throws IOException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
+		if(ioService==IOService.FILE_IO) {
+			new AddressBookIO().writeDataToFile(this.addressBook, name);
+		}
+		else if(ioService==IOService.CSV_IO) {
+			new AddressBookIO().writeDataToCsv(this.addressBook, name);
+		}else if(ioService==IOService.JSON_IO) {
+			new AddressBookIO().writeDataToJson(this.addressBook, name);
 		}
 	}
 	
-	public void printSummary() {
-		System.out.println("Summary by City:");
-		printCitySummary();
-		System.out.println("\nSummary by state:");
-		printStateSummary();
-	}
-	
-	public void getSortedContacts()
-	{
-		contacts.stream().sorted((c1,c2) -> c1.compareTo(c2)).peek(c -> {
-			System.out.println(c.getFirstName());
-		});
-	}
-	public void printCitySummary() {
-		contactsByCity.keySet().stream().peek(c -> {
-			System.out.println(c+" : "+contactsByCity.get(c).stream().count());
-		});
-	}
-	
-	public void printStateSummary() {
-		contactsByState.keySet().stream().peek(s -> {
-			System.out.println(s+" : "+contactsByState.get(s).stream().count());
-		});
-	}
-	
-	public void findContactInState(String stateName) {
-		contacts.stream().filter(c -> c.getState().equals(stateName)).peek(c -> {
-			System.out.println(c.getFirstName()+" : "+stateName);
-		});
-	}
-
-	public void editContact() {
-		System.out.println("Enter first name of person you want edit:");
-		String firstName = scanner.nextLine();
-		Contact contactToEdit = contacts.stream().filter(c -> c.getFirstName().equals(firstName)).findFirst().orElse(null);
-		if(contactToEdit == null) {
-			System.out.println("Contact doesn't exist");
-			return;
-		}
-		System.out
-				.println("Select Option:\n1. First Name\n2. Last Name\n 3. City\n4. State\n5. Zip\n6. Phone\n7. Email");
-		int choice = Integer.parseInt(scanner.nextLine());
-
-		switch (choice) {
-		case 1:
-			System.out.println("Enter new first name:");
-			String newFirstName = scanner.nextLine();
-			contactToEdit.setFirstName(newFirstName);
-			break;
-
-		case 2:
-			System.out.println("Enter new last name:");
-			contactToEdit.setLastName(scanner.nextLine());
-			break;
-
-		case 3:
-			System.out.println("Enter new city");
-			contactToEdit.setCity(scanner.nextLine());
-			break;
-
-		case 4:
-			System.out.println("Enter new State");
-			contactToEdit.setState(scanner.nextLine());
-			break;
-
-		case 5:
-			System.out.println("Enter new Zip");
-			contactToEdit.setZip(scanner.nextLine());
-			break;
-
-		case 6:
-			System.out.println("Enter new Phone");
-			contactToEdit.setPhoneNumber(scanner.nextLine());
-			break;
-
-		case 7:
-			System.out.println("Enter new email");
-			contactToEdit.setEmail(scanner.nextLine());
-			break;
-
-		default:
-			System.err.println("Invalid Option");
+	public static void readData(String name, IOService ioService) throws FileNotFoundException{
+		if(ioService==IOService.FILE_IO) {
+			new AddressBookIO().readFromFile(name);
+		}else if(ioService== IOService.CSV_IO) {
+			new AddressBookIO().readFromCsv(name);
+		}else if(ioService==IOService.JSON_IO) {
+			new AddressBookIO().readFromJson(name);
 		}
 	}
-
-	public void deleteContact() {
-		System.out.println("Enter first name number of person you want to delete:");
-		String firstName = scanner.nextLine();
-		for(int i=0;i<contacts.size();i++) {
-			if(contacts.get(i).getFirstName().equals(firstName)) {
-				contacts.remove(i);
-				System.out.println("Successfully Deleted");
-				return;
-			}
-		}
-	}
-
-	public void addContact() {
-		System.out.println("Enter the contact details:");
+	
+	@Override
+	public Contact createContact() {
+		System.out.println("Add Contact");
 		System.out.println("Enter first name:");
-		String firstName = scanner.nextLine();
+		String firstName = sc.next();
 		System.out.println("Enter last name");
-		String lastName = scanner.nextLine();
+		String lastName = sc.next();
+		System.out.println("Enter address");
+		String address=sc.next();
 		System.out.println("Enter city");
-		String city = scanner.nextLine();
+		String city = sc.next();
 		System.out.println("Enter state");
-		String state = scanner.nextLine();
+		String state = sc.next();
 		System.out.println("Enter Zip");
-		String zip = scanner.nextLine();
+		int zip = sc.nextInt();
 		System.out.println("Enter Phone");
-		String phoneNumber = scanner.nextLine();
+		int phoneNumber = sc.nextInt();
 		System.out.println("Enter email");
-		String email = scanner.nextLine();
-
-		Contact contact = new Contact(firstName, lastName, city, state, zip, phoneNumber, email);
-		if(!checkIfContactExists(contact)) {
-			contacts.add(contact);
-		}
-		if(contactsByCity.get(city)==null) {
-			contactsByCity.put(city, new LinkedList<>());
-		}
-		contactsByCity.get(city).add(contact);
+		String email = sc.next();
 		
-		if(contactsByState.get(state)==null) {
-			contactsByState.put(state, new LinkedList<>());
-		}
-		contactsByState.get(state).add(contact);
-		
+		Contact newContact=new Contact(firstName,lastName,address,city,state,zip,phoneNumber,email);
+		return newContact;
 		
 	}
 	
-	private boolean checkIfContactExists(Contact contact) {
-		return contacts.stream().filter(c -> c.equals(contact)).findFirst().orElse(null) != null;
-	}
-
-	public void readFromCsv(String fileName) throws IOException{
-		try (Reader reader = Files.newBufferedReader(Paths.get(fileName));) {
-			CSVParser parser = new CSVParserBuilder().withSeparator('\t').build();
-			CSVReader csvReader = new CSVReaderBuilder(reader)
-					.withCSVParser(parser)
-                    .withSkipLines(1)
-                    .build();
-			List<String[]> allData = csvReader.readAll();
-			contacts = new LinkedList<>();
-			System.out.println(allData.size());
-
-			for(int index=0;index<allData.size()-1;index++) {
-				String[] row = allData.get(index);
-
-				System.out.println("First Name: " + row[0]);
-				System.out.println("Last Name: " + row[1]);
-				System.out.println("City: " + row[2]);
-				System.out.println("State: " + row[3]);
-				System.out.println("zip: "+row[4]);
-				System.out.println("Phone: "+row[5]);
-				System.out.println("Email: "+row[6]);
-				System.out.println("===============");
-				contacts.add(new Contact(row[0],row[1],row[2],row[3],row[4],row[5],row[6]));
+	@Override
+	public void addContact(Contact newContact) {
+		
+		Contact checkDuplicate=addressBook.stream()
+								.filter(contact -> contact.getFirstName().equalsIgnoreCase(newContact.getFirstName()))
+								.findFirst().orElse(null);
+		
+		if(checkDuplicate==null) {
+			addressBook.add(newContact);
+			if(contactsInCities.containsKey(newContact.getCity())) {
+				ArrayList<String> names=contactsInCities.get(newContact.getCity());
+				names.add(newContact.getFirstName());
+				contactsInCities.replace(newContact.getCity(), names);
+			}else {
+				ArrayList<String> names=new ArrayList<>();
+				names.add(newContact.getFirstName());
+				contactsInCities.put(newContact.getCity(), names);
 			}
 			
-			reader.close();
+			if(contactsInStates.containsKey(newContact.getState())) {
+				ArrayList<String> names=contactsInCities.get(newContact.getState());
+				names.add(newContact.getFirstName());
+				contactsInStates.replace(newContact.getState(), names);
+			}else {
+				ArrayList<String> names=new ArrayList<>();
+				names.add(newContact.getFirstName());
+				contactsInStates.put(newContact.getState(), names);
+			}
+		}
+		else
+			System.out.println("This contact already exists");
+		
+	}
+	
+	@Override
+	public void editContact() {
+		System.out.println("Edit contact:");
+		System.out.println("Select Option:\n1.First Name\n2.Last Name\n3.City\n4.State\n5.Zip Code\n6.Phone\n7.Email");
+		int choice=sc.nextInt();
+		System.out.println("Enter First name of contact to be edited");
+		String nameToBeEdited=sc.nextLine();
+		Contact contactToBeEdited=null;
+		for(Contact contact : addressBook) {
+			if(contact.getFirstName().equals(contactToBeEdited)) {
+				contactToBeEdited=contact;
+				break;
+			}
+		}
+		if(contactToBeEdited!=null) {
+			switch(choice) {
+				case 1: System.out.println("Enter new First Name");
+						String newFName=sc.next();
+						contactToBeEdited.setFirstName(newFName);
+						break;
+				case 2: System.out.println("Enter new Last Name");
+						String newLName=sc.next();
+						contactToBeEdited.setLastName(newLName);
+						break;
+				case 3: System.out.println("Enter new City");
+						String newCity=sc.next();
+						contactToBeEdited.setCity(newCity);
+						break;
+				case 4: System.out.println("Enter new State");
+						String newState=sc.next();
+						contactToBeEdited.setState(newState);
+						break;
+				case 5: System.out.println("Enter new Zip Code");
+						int newZip=sc.nextInt();
+						contactToBeEdited.setZipCode(newZip);
+						break;
+				case 6: System.out.println("Enter new Phone Number");
+						int newPNumber=sc.nextInt();
+						contactToBeEdited.setPhoneNumber(newPNumber);
+						break;
+				case 7: System.out.println("Enter new Email");
+						String newEmail=sc.next();
+						contactToBeEdited.setEmailId(newEmail);
+						break;
+			}
+			System.out.println("Contact edited");
+		}else
+		{
+			System.out.println("Contact not found");
 		}
 	}
 	
-	public void readFromJson(String fileName) {
-		Gson gson=new Gson();
-		BufferedReader br=new BufferedReader(new FileReader(fileName));
-		Contact[] contactsFile= gson.fromJson(br, Contact[].class);
-		List<Contact> addressbook=Arrays.asList(contactsFile);
-		System.out.println(addressbook);
+	@Override
+	public void deleteContact() {
+		System.out.println("Enter first name of contact to be deleted");
+		String nameToBeDeleted=sc.nextLine();
+		for(Contact contact : addressBook) {
+			if(contact.getFirstName().equals(nameToBeDeleted)) {
+				addressBook.remove(contact);
+				break;
+			}
+		}
+		System.out.println("Contact deleted");
 	}
 
-	public void writeToCsv(String fileName) {
-		File file = new File("write.csv");
+	@Override
+	public void findContactInCity(String name, String cityName) {
+		Contact searchContact=addressBook.stream()
+							.filter(contact -> contact.getFirstName().equals(name) && contact.getCity().equals(cityName))
+							.findFirst().orElse(null);
 		
-		try {
-	        FileWriter outputfile = new FileWriter(file);
-	        CSVWriter writer = new CSVWriter(outputfile);
-	        
-	        List<String[]> data = new ArrayList();
-	        for(Contact c : contacts) {
-	        	String[] row = {c.getFirstName(),c.getLastName(),c.getCity(),c.getState(),c.getZip(),c.getPhoneNumber(),c.getEmail()};
-	        	data.add(row);
-	        }
-	        
-	        writer.writeAll(data);
-	        writer.close();
-	    }
-	    catch (IOException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	    }
+		if(searchContact!=null)
+			System.out.println("Contact found");
+		else
+			System.out.println("Contact not found");
 		
 	}
+	
+	@Override
+	public void findContactInState(String name, String stateName) {
+		Contact searchContact=addressBook.stream()
+				.filter(contact -> contact.getFirstName().equals(name) && contact.getState().equals(stateName))
+				.findFirst().orElse(null);
+
+			if(searchContact!=null)
+				System.out.println("Contact found");
+			else
+				System.out.println("Contact not found");
+		
+	}
+	
+	@Override
+	public void sortAddressBook() {
+		addressBook.stream()
+					.sorted((contact1, contact2) -> contact1.getFirstName().compareTo(contact2.getFirstName()))
+					.forEach(contact -> System.out.print(contact.getFirstName()+" "));
+	}
+	
+	@Override
+	public void sortByCity() {
+		addressBook.stream()
+		.sorted((contact1, contact2) -> contact1.getCity().compareTo(contact2.getCity()))
+		.forEach(contact -> System.out.print(contact.getFirstName()+":"+contact.getCity()+" "));
+	}
+	
+	@Override
+	public void sortByState() {
+		addressBook.stream()
+		.sorted((contact1, contact2) -> contact1.getState().compareTo(contact2.getState()))
+		.forEach(contact -> System.out.print(contact.getFirstName()+":"+contact.getState()+" "));
+	}
+	
+	@Override
+	public void sortByZip() {
+		addressBook.stream()
+		.sorted((contact1, contact2) -> String.valueOf(contact1.getZipCode()).compareTo(String.valueOf(contact2.getZipCode())))
+		.forEach(contact -> System.out.print(contact.getFirstName()+":"+contact.getZipCode()+" "));
+	}
+	
+	@Override
+	public int size() {
+		return addressBook.size();
+	}
+
+
 }
