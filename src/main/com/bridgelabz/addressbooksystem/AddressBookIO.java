@@ -61,7 +61,7 @@ public class AddressBookIO {
 	public List<String> readFromFile(String name) {
 		List<String> listOfContacts=new ArrayList<String>();
 		try {
-			Files.lines(new File(name +".txt").toPath())
+			Files.lines(new File(name).toPath())
 			.map(contact-> contact.trim())
 			.forEach(contact -> {System.out.println(contact);
 								listOfContacts.add(contact);});
