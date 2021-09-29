@@ -59,5 +59,10 @@ public class AddressBookTest {
 		List<Contact> contacts=new AddressBookIO().readFromJson("book_json.json");
 		Assert.assertEquals( 1,contacts.size());
 	}
+	
+	@Test
+	public void givenAddressBookInDB_WhenRetrieved_ShouldMatchRowCount() {
+		
+	}
 
 }

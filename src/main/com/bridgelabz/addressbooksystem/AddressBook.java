@@ -29,7 +29,8 @@ public class AddressBook implements AddressBookIF{
 		FILE_IO,
 		CONSOLE_IO,
 		CSV_IO,
-		JSON_IO
+		JSON_IO,
+		DB_IO
 	}
 	public AddressBook(String name){
 		this.addressBook=new LinkedList<>();
@@ -54,6 +55,8 @@ public class AddressBook implements AddressBookIF{
 			new AddressBookIO().readFromCsv(name);
 		}else if(ioService==IOService.JSON_IO) {
 			new AddressBookIO().readFromJson(name);
+		} else if(ioService==IOService.DB_IO) {
+			new AddressBookIO().readFromDB();
 		}
 	}
 	

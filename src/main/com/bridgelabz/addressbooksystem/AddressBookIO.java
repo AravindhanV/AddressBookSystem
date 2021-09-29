@@ -95,4 +95,9 @@ public class AddressBookIO {
 		return addressbook;
 	}
 
+	public void readFromDB() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
