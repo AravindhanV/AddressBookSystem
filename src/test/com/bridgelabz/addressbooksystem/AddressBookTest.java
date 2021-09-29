@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.bridgelabz.addressbooksystem.AddressBook.IOService;
+import com.bridgelabz.addressbooksystem.AddressBookDBService.BookType;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
@@ -89,6 +90,13 @@ public class AddressBookTest {
 		List<Contact> contactList=new AddressBookIO().readFromDBByCity("city1new");
 		Assert.assertEquals(1, contactList.size());
 	}	
-
+	
+	@Test
+	public void givenContact_WhenInserted_ShouldSyncWithDB() {
+		AddressBookIO addressBookIO = new AddressBookIO();
+		int size = addressBookIO.readFromDB("book1").size();
+		List<Contact> contactList = new AddressBookIO().addContact("test_first", "test_last", "test_city", "test_state", 456799, 147258369,"test_book",BookType.FRIEND);
+		Assert.assertEquals(size+1,contactList.size());
+	}
 
 }
