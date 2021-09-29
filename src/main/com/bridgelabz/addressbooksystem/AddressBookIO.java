@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -99,6 +100,12 @@ public class AddressBookIO {
 	public List<Contact> readFromDB(String name) {
 		List<Contact> contactList=new ArrayList<>();
 		contactList=new AddressBookDBService().readData(name);
+		return contactList;
+	}
+	
+	public List<Contact> readFromDB(String name,LocalDate dateAdded) {
+		List<Contact> contactList=new ArrayList<>();
+		contactList=new AddressBookDBService().readDataInDateRange(name,dateAdded);
 		return contactList;
 	}
 

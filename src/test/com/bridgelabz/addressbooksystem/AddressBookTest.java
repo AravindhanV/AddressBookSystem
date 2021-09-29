@@ -3,6 +3,7 @@ package com.bridgelabz.addressbooksystem;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.Assert;
@@ -76,5 +77,11 @@ public class AddressBookTest {
 		Assert.assertTrue(result);
 
 	}
+	
+	@Test
+	public void givenAddressBookInDB_WhenRetrievedInDateRange_ShouldMatchRowCount() {
+		List<Contact> contactList=new AddressBookIO().readFromDB("book1",LocalDate.now());
+		Assert.assertEquals(1, contactList.size());
+	}	
 
 }

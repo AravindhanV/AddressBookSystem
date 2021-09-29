@@ -1,5 +1,7 @@
 package com.bridgelabz.addressbooksystem;
 
+import java.time.LocalDate;
+
 import com.opencsv.bean.CsvBindByName;
 
 public class Contact implements Comparable<Contact>{
@@ -18,6 +20,7 @@ public class Contact implements Comparable<Contact>{
 	@CsvBindByName(column="email")
 	private String email;
 	private int id;
+	private LocalDate dateAdded;
 
 	public Contact(String firstName, String lastName, String city, String state, String zip, String phoneNumber,
 			String email) {
@@ -34,6 +37,13 @@ public class Contact implements Comparable<Contact>{
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
+	}
+	
+	public Contact(int id, String firstName, String lastName, LocalDate dateAdded) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateAdded = dateAdded;
 	}
 	
 	

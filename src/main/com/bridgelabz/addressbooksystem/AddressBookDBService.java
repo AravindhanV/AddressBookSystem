@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,6 +61,20 @@ public class AddressBookDBService {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	public List<Contact> readDataInDateRange(String name, LocalDate dateAdded) {
+		String sql = "select * from contact where date_added between cast('2021-01-01' as date) and date(now())";
+		List<Contact> contactList= new ArrayList<>();
+		try(Connection connection =this.getConnection()) {
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery(sql);
+			contactList= this.getcontactData(result);
+
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return contactList;
 	}
 
 }
