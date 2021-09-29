@@ -117,4 +117,10 @@ public class AddressBookIO {
 		return true;					 	
 	}
 
+	public List<Contact> readFromDBByCity(String city) {
+		List<Contact> contactList=new ArrayList<>();
+		contactList=new AddressBookDBService().readDataByCity(city);
+		return contactList;
+	}
+
 }

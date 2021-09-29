@@ -83,5 +83,11 @@ public class AddressBookTest {
 		List<Contact> contactList=new AddressBookIO().readFromDB("book1",LocalDate.now());
 		Assert.assertEquals(1, contactList.size());
 	}	
+	
+	@Test
+	public void givenAddressBookInDB_WhenRetrievedInCity_ShouldMatchRowCount() {
+		List<Contact> contactList=new AddressBookIO().readFromDBByCity("city1new");
+		Assert.assertEquals(1, contactList.size());
+	}	
 
 }

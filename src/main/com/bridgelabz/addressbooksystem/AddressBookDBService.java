@@ -77,4 +77,18 @@ public class AddressBookDBService {
 		return contactList;
 	}
 
+	public List<Contact> readDataByCity(String city) {
+		String sql = "select * from contact as c, address as a where c.contact_id=a.contact_id and city='"+city+"'";
+		List<Contact> contactList= new ArrayList<>();
+		try(Connection connection =this.getConnection()) {
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery(sql);
+			contactList= this.getcontactData(result);
+
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return contactList;
+	}
+
 }
