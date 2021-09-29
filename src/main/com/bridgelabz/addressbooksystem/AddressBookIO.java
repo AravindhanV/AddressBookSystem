@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.bridgelabz.addressbooksystem.AddressBook.IOService;
+import com.bridgelabz.addressbooksystem.AddressBookDBService.BookType;
 import com.google.gson.Gson;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -120,6 +121,15 @@ public class AddressBookIO {
 	public List<Contact> readFromDBByCity(String city) {
 		List<Contact> contactList=new ArrayList<>();
 		contactList=new AddressBookDBService().readDataByCity(city);
+		return contactList;
+	}
+
+	public List<Contact> addContact(String firstName, String lastName, String city, String state, int zip,
+			long phoneNumber, String bookName, BookType type) {
+		List<Contact> contactList=new ArrayList<>();
+		AddressBookDBService service = new AddressBookDBService();
+		service.addContactToDB(firstName,lastName,city,state,zip,phoneNumber,bookName,type);
+		contactList=new AddressBookDBService().readData(firstName);
 		return contactList;
 	}
 

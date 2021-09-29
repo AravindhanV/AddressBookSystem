@@ -2,6 +2,7 @@ package com.bridgelabz.addressbooksystem;
 
 import java.time.LocalDate;
 
+import com.bridgelabz.addressbooksystem.AddressBookDBService.BookType;
 import com.opencsv.bean.CsvBindByName;
 
 public class Contact implements Comparable<Contact>{

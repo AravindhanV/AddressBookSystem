@@ -11,6 +11,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class AddressBookDBService {
+	public static enum BookType {
+		FRIEND,
+		FAMILY,
+		PROFESSION
+	}
 	private Connection getConnection() throws SQLException {
 		String jdbcURL="jdbc:mysql://localhost:3306/addressBookService?useSSL=false";
 		String userName="user1";
@@ -89,6 +94,119 @@ public class AddressBookDBService {
 			e.printStackTrace();
 		}
 		return contactList;
+	}
+
+	public void addContactToDB(String firstName, String lastName, String city, String state, int zip,
+			long phoneNumber, String bookName, BookType type) {
+		Connection connection = null;
+		int contactId = -1;
+		int addressBookId = -1;
+		try {
+			connection = this.getConnection();
+			connection.setAutoCommit(false);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//Insert into contact
+		try (Statement statement = connection.createStatement()){
+			String sql = String.format("insert into contact (first_name,last_name,date_added) values ('%s','%s',date(now()))",firstName,lastName);
+			int rowsAffected = statement.executeUpdate(sql,statement.RETURN_GENERATED_KEYS);
+			if(rowsAffected == 1) {
+				ResultSet resultSet = statement.getGeneratedKeys();
+				if(resultSet.next()) contactId = resultSet.getInt(1);
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		//insert into address
+		try (Statement statement = connection.createStatement()){
+			String sql = String.format("insert into address (contact_id,city,state,zipcode) values (%d,'%s','%s',%d)",contactId,city,state,zip);
+			statement.executeUpdate(sql,statement.RETURN_GENERATED_KEYS);
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		//insert into address_book
+		try (Statement statement = connection.createStatement()){
+			String sql = String.format("insert into address_book (book_name,book_type) values ('%s','%s')",bookName,getBookType(type));
+			int rowsAffected = statement.executeUpdate(sql,statement.RETURN_GENERATED_KEYS);
+			if(rowsAffected == 1) {
+				ResultSet resultSet = statement.getGeneratedKeys();
+				if(resultSet.next()) addressBookId = resultSet.getInt(1);
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		//insert into contact_book
+		try (Statement statement = connection.createStatement()){
+			String sql = String.format("insert into contact_book values (%d,%d)",contactId,addressBookId);
+			int rowsAffected = statement.executeUpdate(sql);
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		//Insert into phone_number
+		try (Statement statement = connection.createStatement()){
+			String sql = String.format("insert into phone_number values (%d,%d)",contactId,phoneNumber);
+			int rowsAffected = statement.executeUpdate(sql,statement.RETURN_GENERATED_KEYS);
+			if(rowsAffected == 1) {
+				ResultSet resultSet = statement.getGeneratedKeys();
+				if(resultSet.next()) contactId = resultSet.getInt(1);
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		//Commit changes to DB
+		try {
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if(connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	private String getBookType(BookType type) {
+		if(type == BookType.FRIEND)
+			return "Friend";
+		else if(type == BookType.FAMILY)
+			return "Family";
+		else
+			return "Profession";
 	}
 
 }
