@@ -79,15 +79,16 @@ public class AddressBookTest {
 	}
 	
 	@Test
-	public void givenAddressBookInDB_WhenRetrievedInDateRange_ShouldMatchRowCount() {
+	public void givenDateRange_WhenRetrievedInDateRange_ShouldMatchRowCount() {
 		List<Contact> contactList=new AddressBookIO().readFromDB("book1",LocalDate.now());
 		Assert.assertEquals(1, contactList.size());
 	}	
 	
 	@Test
-	public void givenAddressBookInDB_WhenRetrievedInCity_ShouldMatchRowCount() {
+	public void givenCity_WhenRetrievedByCity_ShouldMatchRowCount() {
 		List<Contact> contactList=new AddressBookIO().readFromDBByCity("city1new");
 		Assert.assertEquals(1, contactList.size());
 	}	
+
 
 }
