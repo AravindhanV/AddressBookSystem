@@ -2,6 +2,7 @@ package com.bridgelabz.addressbooksystem;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.Assert;
@@ -9,6 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.bridgelabz.addressbooksystem.AddressBook.IOService;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
@@ -69,9 +71,8 @@ public class AddressBookTest {
 	
 	@Test
 	public void givenAddressBookName_whenUpdated_shouldSyncWithDB() throws SQLException{
-		new AddressBookIO().updateAddressBook(newContact, "book1");
+		boolean result = new AddressBookIO().updateAddressBook("first","city1new","state1new",9876, IOService.DB_IO);
 		List<Contact> contactList=new AddressBookIO().readFromDB("book1");
-		boolean result=contactList.contains(newContact);
 		Assert.assertTrue(result);
 
 	}

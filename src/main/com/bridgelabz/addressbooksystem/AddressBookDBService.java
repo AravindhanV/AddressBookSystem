@@ -49,5 +49,17 @@ public class AddressBookDBService {
 		}
 		return contactList;
 	}
+	
+	public int updateAddress(String firstName, String city, String state, int zip) {
+		String sql = String.format("update address set city='%s',state='%s',zipcode=%d where contact_id ="
+				+ "(select contact_id from contact where first_name='%s');", city,state,zip,firstName);
+		try(Connection connection =this.getConnection()) {
+			Statement statement = connection.createStatement();
+			return statement.executeUpdate(sql);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 
 }

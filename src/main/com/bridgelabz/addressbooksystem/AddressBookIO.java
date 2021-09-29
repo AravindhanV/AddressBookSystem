@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.bridgelabz.addressbooksystem.AddressBook.IOService;
 import com.google.gson.Gson;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -101,9 +102,12 @@ public class AddressBookIO {
 		return contactList;
 	}
 
-	public void updateAddressBook(Contact newContact, String string) {
-		// TODO Auto-generated method stub
-		
+	public boolean updateAddressBook(String firstName, String city, String state, int zip, IOService service) {
+		if(service==IOService.DB_IO)
+			 if(new AddressBookDBService().updateAddress(firstName, city, state, zip) ==0)
+				 return false;
+
+		return true;					 	
 	}
 
 }
