@@ -17,6 +17,7 @@ public class Contact implements Comparable<Contact>{
 	private String phoneNumber;
 	@CsvBindByName(column="email")
 	private String email;
+	private int id;
 
 	public Contact(String firstName, String lastName, String city, String state, String zip, String phoneNumber,
 			String email) {
@@ -27,6 +28,12 @@ public class Contact implements Comparable<Contact>{
 		this.zip = zip;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
+	}
+	
+	public Contact(int id, String firstName, String lastName) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
 	
 	

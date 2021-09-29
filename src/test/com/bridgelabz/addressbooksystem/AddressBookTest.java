@@ -14,6 +14,7 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 public class AddressBookTest {
 	static AddressBook addressBook;
+	static Contact newContact;
 	
 	@BeforeClass
     public static void init() {
@@ -26,7 +27,7 @@ public class AddressBookTest {
 		String zipCode="123456";
 		String phoneNumber="1234567890";
 		String emailId="abc@gmail.com";
-		Contact newContact=new Contact(firstName,lastName,city,state,zipCode,phoneNumber,emailId);
+		newContact=new Contact(firstName,lastName,city,state,zipCode,phoneNumber,emailId);
 		addressBook.addContact(newContact);
     }
 	
@@ -62,7 +63,17 @@ public class AddressBookTest {
 	
 	@Test
 	public void givenAddressBookInDB_WhenRetrieved_ShouldMatchRowCount() {
-		
+		List<Contact> contactList=new AddressBookIO().readFromDB("book1");
+		Assert.assertEquals(1, contactList.size());
+	}
+	
+	@Test
+	public void givenAddressBookName_whenUpdated_shouldSyncWithDB() throws SQLException{
+		new AddressBookIO().updateAddressBook(newContact, "book1");
+		List<Contact> contactList=new AddressBookIO().readFromDB("book1");
+		boolean result=contactList.contains(newContact);
+		Assert.assertTrue(result);
+
 	}
 
 }

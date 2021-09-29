@@ -95,7 +95,13 @@ public class AddressBookIO {
 		return addressbook;
 	}
 
-	public void readFromDB() {
+	public List<Contact> readFromDB(String name) {
+		List<Contact> contactList=new ArrayList<>();
+		contactList=new AddressBookDBService().readData(name);
+		return contactList;
+	}
+
+	public void updateAddressBook(Contact newContact, String string) {
 		// TODO Auto-generated method stub
 		
 	}
