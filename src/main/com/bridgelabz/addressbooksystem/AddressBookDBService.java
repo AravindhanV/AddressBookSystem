@@ -27,7 +27,7 @@ public class AddressBookDBService {
 		return connection;
 	}
 
-	public List<Contact> readData(String name) {
+	public List<Contact> readData() {
 		String sql = "select * from contact";
 		List<Contact> contactList= new ArrayList<>();
 		try(Connection connection =this.getConnection()) {

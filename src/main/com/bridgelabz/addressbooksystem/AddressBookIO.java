@@ -98,9 +98,9 @@ public class AddressBookIO {
 		return addressbook;
 	}
 
-	public List<Contact> readFromDB(String name) {
+	public List<Contact> readFromDB() {
 		List<Contact> contactList=new ArrayList<>();
-		contactList=new AddressBookDBService().readData(name);
+		contactList=new AddressBookDBService().readData();
 		return contactList;
 	}
 	
@@ -129,7 +129,7 @@ public class AddressBookIO {
 		List<Contact> contactList=new ArrayList<>();
 		AddressBookDBService service = new AddressBookDBService();
 		service.addContactToDB(firstName,lastName,city,state,zip,phoneNumber,bookName,type);
-		contactList=new AddressBookDBService().readData(firstName);
+		contactList=new AddressBookDBService().readData();
 		return contactList;
 	}
 

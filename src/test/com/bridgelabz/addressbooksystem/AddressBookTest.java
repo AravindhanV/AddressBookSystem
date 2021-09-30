@@ -66,15 +66,15 @@ public class AddressBookTest {
 	}
 	
 	@Test
-	public void givenAddressBookInDB_WhenRetrieved_ShouldMatchRowCount() {
-		List<Contact> contactList=new AddressBookIO().readFromDB("book1");
+	public void givenAddressBookDB_WhenRetrieved_ShouldMatchRowCount() {
+		List<Contact> contactList=new AddressBookIO().readFromDB();
 		Assert.assertEquals(1, contactList.size());
 	}
 	
 	@Test
 	public void givenAddressBookName_whenUpdated_shouldSyncWithDB() throws SQLException{
 		boolean result = new AddressBookIO().updateAddressBook("first","city1new","state1new",9876, IOService.DB_IO);
-		List<Contact> contactList=new AddressBookIO().readFromDB("book1");
+		List<Contact> contactList=new AddressBookIO().readFromDB();
 		Assert.assertTrue(result);
 
 	}
@@ -94,7 +94,7 @@ public class AddressBookTest {
 	@Test
 	public void givenContact_WhenInserted_ShouldSyncWithDB() {
 		AddressBookIO addressBookIO = new AddressBookIO();
-		int size = addressBookIO.readFromDB("book1").size();
+		int size = addressBookIO.readFromDB().size();
 		List<Contact> contactList = new AddressBookIO().addContact("test_first", "test_last", "test_city", "test_state", 456799, 147258369,"test_book",BookType.FRIEND);
 		Assert.assertEquals(size+1,contactList.size());
 	}
