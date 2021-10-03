@@ -110,9 +110,9 @@ public class AddressBookIO {
 		return contactList;
 	}
 
-	public boolean updateAddressBook(String firstName, String city, String state, int zip, IOService service) {
+	public boolean updateAddressBook(String email, String city, String state, int zip, IOService service) {
 		if(service==IOService.DB_IO)
-			 if(new AddressBookDBService().updateAddress(firstName, city, state, zip) ==0)
+			 if(new AddressBookDBService().updateAddress(email, city, state, zip) ==0)
 				 return false;
 
 		return true;					 	

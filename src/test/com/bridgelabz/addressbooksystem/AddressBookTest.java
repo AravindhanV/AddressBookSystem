@@ -73,7 +73,7 @@ public class AddressBookTest {
 	
 	@Test
 	public void givenAddressBookName_whenUpdated_shouldSyncWithDB() throws SQLException{
-		boolean result = new AddressBookIO().updateAddressBook("first","city1new","state1new",9876, IOService.DB_IO);
+		boolean result = new AddressBookIO().updateAddressBook("test1@abc.com","city1new","state1new",9876, IOService.DB_IO);
 		List<Contact> contactList=new AddressBookIO().readFromDB();
 		Assert.assertTrue(result);
 

@@ -56,9 +56,9 @@ public class AddressBookDBService {
 		return contactList;
 	}
 	
-	public int updateAddress(String firstName, String city, String state, int zip) {
+	public int updateAddress(String email, String city, String state, int zip) {
 		String sql = String.format("update address set city='%s',state='%s',zipcode=%d where contact_id ="
-				+ "(select contact_id from contact where first_name='%s');", city,state,zip,firstName);
+				+ "(select contact_id from contact where email='%s');", city,state,zip,email);
 		try(Connection connection =this.getConnection()) {
 			Statement statement = connection.createStatement();
 			return statement.executeUpdate(sql);
