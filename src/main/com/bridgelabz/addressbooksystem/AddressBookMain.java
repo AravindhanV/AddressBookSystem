@@ -3,7 +3,7 @@ package com.bridgelabz.addressbooksystem;
 import java.io.IOException;
 import java.util.*;
 
-import com.bridgelabz.addressbooksystem.AddressBook.IOService;
+import com.bridgelabz.addressbooksystem.AddressBookImpl.IOService;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
@@ -32,7 +32,7 @@ static Scanner sc=new Scanner(System.in);
 				
 				case 2:	System.out.println("Enter name of address book to be edited");
 						String addressBookName=sc.next();
-						AddressBook addressBookToBeEdited=addressBookArray.getAddressBook(addressBookName);
+						AddressBookImpl addressBookToBeEdited=addressBookArray.getAddressBook(addressBookName);
 						while(true) {
 							System.out.println("1.Add Contact\n2.Edit Contact\n3.Delete Contact\n4.Exit\nSelect option");
 							int choice=sc.nextInt();
@@ -79,14 +79,14 @@ static Scanner sc=new Scanner(System.in);
 				
 				case 9: System.out.println("Enter name of AddressBook to be written to file");
 						String nameOfAddressBook=sc.next();
-						AddressBook addressBook=addressBookArray.getAddressBook(nameOfAddressBook);
+						AddressBookImpl addressBook=addressBookArray.getAddressBook(nameOfAddressBook);
 						addressBook.writeData(nameOfAddressBook+".json",IOService.JSON_IO);
 						break;
 				
 				case 10: System.out.println("Enter name of AddressBook to be read from file");
 						String nameOfAddressBookRead=sc.next();
 						System.out.println(addressBookArray.getAddressBook(nameOfAddressBookRead));
-						AddressBook.readData(nameOfAddressBookRead+".json", IOService.JSON_IO);
+						AddressBookImpl.readData(nameOfAddressBookRead+".json", IOService.JSON_IO);
 						break;
 				
 				case 11: System.exit(0);

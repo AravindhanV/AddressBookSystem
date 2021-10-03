@@ -11,18 +11,18 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.bridgelabz.addressbooksystem.AddressBook.IOService;
+import com.bridgelabz.addressbooksystem.AddressBookImpl.IOService;
 import com.bridgelabz.addressbooksystem.AddressBookDBService.BookType;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 public class AddressBookTest {
-	static AddressBook addressBook;
+	static AddressBookImpl addressBook;
 	static Contact newContact;
 	
 	@BeforeClass
     public static void init() {
-		addressBook= new AddressBook("addressbook1");
+		addressBook= new AddressBookImpl("addressbook1");
 		String firstName="Alice";
 		String lastName="Bob";
 		String address="abc";

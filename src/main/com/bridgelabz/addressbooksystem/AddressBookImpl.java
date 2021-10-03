@@ -19,7 +19,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
-public class AddressBook implements AddressBookIF{
+public class AddressBookImpl implements AddressBookIF{
 	Scanner sc=new Scanner(System.in);
 	public LinkedList<Contact> addressBook;
 	public static HashMap<String, ArrayList<String>> contactsInCities=new HashMap<>();
@@ -32,7 +32,7 @@ public class AddressBook implements AddressBookIF{
 		JSON_IO,
 		DB_IO
 	}
-	public AddressBook(String name){
+	public AddressBookImpl(String name){
 		this.addressBook=new LinkedList<>();
 		this.name=name;
 	}
